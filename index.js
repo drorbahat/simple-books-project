@@ -12,9 +12,9 @@ const addNewBook = () => {
         alert("Name or author field is empty. Please try again.")
         return
     }
-
+    let newId = Math.floor((Math.random() * 100000) + 1)
     let newBook = {
-        id: bookIdCounter++,
+        id: newId,
         name: nameElement.value,
         author: authorElement.value,
         price: Number(priceElement.value)
@@ -53,7 +53,6 @@ const loadBooks = () => {
 
 const handleDeleteBookById = (id) => {
     let filteredBooksList = bookList.filter(el => el.id !== id)
-
     bookList = filteredBooksList
     loadBooks()
 }
