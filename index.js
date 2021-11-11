@@ -1,5 +1,3 @@
-let bookList = []
-
 let nameElement = document.getElementById("book-name-input")
 let authorElement = document.getElementById("book-author-input")
 let priceElement = document.getElementById("book-price-input")
@@ -12,6 +10,7 @@ const addNewBook = () => {
         return
     }
     let newId = Math.floor((Math.random() * 100000) + 1)
+
     let newBook = {
         id: newId,
         name: nameElement.value,
@@ -19,8 +18,18 @@ const addNewBook = () => {
         price: Number(priceElement.value)
     }
 
-    bookList.push(newBook)
-    console.log(bookList)
+    let jsonArray = localStorage.getItem("books-list")
+    let booksList = JSON.parse(jsonArray)
+
+    if (booksList === null) {
+        booksList = []
+    }
+
+    booksList.push(newBook)
+
+    let toJson = JSON.stringify(booksList)
+    localStorage.setItem("books-list", toJson)
+
     loadBooks()
 
     nameElement.value = ''
@@ -28,8 +37,14 @@ const addNewBook = () => {
     priceElement.value = ''
 }
 
-// console.log(bookList)
 const loadBooks = () => {
+    let jsonArray = localStorage.getItem("books-list")
+    let booksList = JSON.parse(jsonArray)
+
+    if (booksList === null) {
+        return
+    }
+
     let table = `<table>
                     <tr>
                         <th>Book Name</th>
@@ -38,7 +53,7 @@ const loadBooks = () => {
                         <th style="color: red;">delete</th>
                     </tr>
              `
-    for (let book of bookList) {
+    for (let book of booksList) {
         table += `<tr>
                     <td>${book.name}</td>
                     <td>${book.author}</td>
@@ -51,7 +66,11 @@ const loadBooks = () => {
 }
 
 const handleDeleteBookById = (id) => {
-    let filteredBooksList = bookList.filter(el => el.id !== id)
-    bookList = filteredBooksList
+    let jsonArray = localStorage.getItem("books-list")
+    let booksList = JSON.parse(jsonArray)
+    let filteredBooksList = booksList.filter(el => el.id !== id)
+    booksList = filteredBooksList
+    let toJson = JSON.stringify(booksList)
+    localStorage.setItem("books-list", toJson)
     loadBooks()
 }
