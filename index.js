@@ -1,5 +1,4 @@
 let bookList = []
-let bookIdCounter = 0
 
 let nameElement = document.getElementById("book-name-input")
 let authorElement = document.getElementById("book-author-input")
